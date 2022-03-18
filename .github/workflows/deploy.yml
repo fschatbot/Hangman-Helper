@@ -30,8 +30,9 @@ jobs:
       - name: Create local changes
         run: |
           npm clean-install --no-audit --no-fund
-          npm run build
+          pip install -r requirements.txt
           mkdir words
+          npm run build
           python scrap.py
       - name: Commit files
         run: |
