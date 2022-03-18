@@ -30,7 +30,7 @@ jobs:
       - name: Create local changes
         run: |
           npm clean-install --no-audit --no-fund
-          pip install -r requirements.txt
+          pip install -r requirements.txt -q
           mkdir words
           npm run build
           python scrap.py
