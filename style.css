@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Mulish&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -33,4 +34,15 @@ body {
 }
 .guesses span {
 	@apply border-b border-gray-400;
+}
+
+/* keyboard CSS */
+.keyboard {
+	@apply grid grid-cols-6 gap-2 grid-flow-row mx-5;
+	font-family: "Mulish", sans-serif;
+}
+
+.keyboard span {
+	@apply w-10 h-10 cursor-pointer bg-slate-300 rounded-md
+	flex justify-center items-center uppercase hover:bg-slate-400;
 }

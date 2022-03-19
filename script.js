@@ -46,15 +46,25 @@ const FindGuess = () => {
 			.join("")}$`
 	);
 	document.getElementById("matched_words").innerHTML = "";
-	matchedWords = wordlist
-		.filter((word) => value.test(word))
+	// Filter the list of words
+	matchedWords = wordlist.filter((word) => value.test(word.toLowerCase()));
+	// Add sample words
+	matchedWords
+		.slice(0, 100)
 		.map((word) => {
 			// Convert String to Span
 			let span = document.createElement("span");
 			span.textContent = word;
 			return span;
 		})
-		.slice(0, 100)
 		.forEach((word) => document.getElementById("matched_words").appendChild(word));
-	console.log(matchedWords);
+	// Get how many times does a char appears in the list of words
+	let charCount = {};
+	matchedWords.forEach((word) => {
+		word.split("").forEach((char) => {
+			if (charCount[char.toLowerCase()]) charCount[char.toLowerCase()]++;
+			else charCount[char.toLowerCase()] = 1;
+		});
+	});
+	console.log(matchedWords, charCount);
 };
