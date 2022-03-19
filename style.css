@@ -3,5 +3,22 @@
 @tailwind utilities;
 
 body {
-	@apply flex justify-center items-center;
+	@apply flex justify-center items-center min-h-screen flex-col;
+}
+
+.guess {
+	@apply border border-b-2 rounded-md text-center w-12 h-12
+	text-2xl
+	focus-within:outline-none focus-within:border-gray-300 focus-within:border-b-slate-700;
+}
+
+.header {
+	@apply text-center mb-5;
+}
+
+.header h1 {
+	@apply text-4xl font-bold;
+}
+.header h2 {
+	@apply text-lg;
 }
