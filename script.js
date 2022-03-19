@@ -1,5 +1,5 @@
 document.querySelectorAll("#current_info > input").forEach((elem) => {
-	elem.addEventListener("keyup", (e) => {
+	elem.addEventListener("keydown", (e) => {
 		e.preventDefault();
 		console.log(e, e.keyCode);
 		if (match(e, "ArrowRight", 39) || match(e, "ArrowDown", 40)) {
@@ -9,8 +9,8 @@ document.querySelectorAll("#current_info > input").forEach((elem) => {
 		} else if (match(e, "Backspace", 8)) {
 			elem.previousElementSibling?.focus();
 			if (elem.value != "") elem.value = "";
-		} else {
-			elem.value = e.key;
+		} else if (e.key.toLowerCase().match(/^[a-z0-9\-]$/)) {
+			elem.value = e.key.toLowerCase();
 			elem.nextElementSibling?.focus();
 		}
 	});
