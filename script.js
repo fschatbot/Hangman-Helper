@@ -2,7 +2,7 @@ document.querySelectorAll("#current_info > input").forEach((elem) => {
 	elem.addEventListener("keydown", (e) => {
 		e.preventDefault();
 		console.log(e, e.keyCode);
-		if (match(e, "ArrowRight", 39) || match(e, "ArrowDown", 40)) {
+		if (match(e, "ArrowRight", 39) || match(e, "ArrowDown", 40) || match(e, "Tab", 9)) {
 			elem.nextElementSibling?.focus();
 		} else if (match(e, "ArrowLeft", 37) || match(e, "ArrowUp", 38)) {
 			elem.previousElementSibling?.focus();
@@ -10,7 +10,8 @@ document.querySelectorAll("#current_info > input").forEach((elem) => {
 			elem.previousElementSibling?.focus();
 			if (elem.value != "") elem.value = "";
 		} else if (e.key.toLowerCase().match(/^[a-z0-9\-]$/)) {
-			elem.value = e.key.toLowerCase();
+			if (elem.value == "") elem.value = e.key.toLowerCase();
+			else elem.nextElementSibling.value = e.key.toLowerCase();
 			elem.nextElementSibling?.focus();
 		}
 	});
