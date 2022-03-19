@@ -22,3 +22,15 @@ body {
 .header h2 {
 	@apply text-lg;
 }
+
+.container {
+	@apply flex flex-row mt-5;
+}
+
+.guesses {
+	@apply flex flex-col overflow-y-scroll scrollbar bg-gray-50 border border-gray-200 shadow-md mr-5
+	max-h-80 min-w-[10rem] p-3 rounded-md text-center;
+}
+.guesses span {
+	@apply border-b border-gray-400;
+}
