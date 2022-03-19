@@ -11,7 +11,7 @@ document.querySelectorAll("#current_info > input").forEach((elem) => {
 			if (elem.value != "") elem.value = "";
 		} else if (e.key.toLowerCase().match(/^[a-z0-9\-]$/)) {
 			if (elem.value == "") elem.value = e.key.toLowerCase();
-			else elem.nextElementSibling.value = e.key.toLowerCase();
+			else if (elem.nextElementSibling) elem.nextElementSibling.value = e.key.toLowerCase();
 			elem.nextElementSibling?.focus();
 		}
 	});
