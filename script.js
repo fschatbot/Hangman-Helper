@@ -1,32 +1,35 @@
-document.querySelectorAll("#current_info > input").forEach((elem) => {
-	elem.addEventListener("keydown", (e) => {
-		e.preventDefault();
-		if (
-			match(e, "ArrowRight", 39) ||
-			match(e, "ArrowDown", 40) ||
-			(match(e, "Tab", 9) && !e.shiftKey)
-		) {
-			elem.nextElementSibling?.focus();
-		} else if (
-			match(e, "ArrowLeft", 37) ||
-			match(e, "ArrowUp", 38) ||
-			(match(e, "Tab", 9) && e.shiftKey)
-		) {
-			elem.previousElementSibling?.focus();
-		} else if (match(e, "Backspace", 8)) {
-			elem.previousElementSibling?.focus();
-			if (elem.value != "") elem.value = "";
-			FindGuess();
-		} else if (e.key.toLowerCase().match(/^[a-z0-9\-]$/)) {
-			if (elem.value == "") elem.value = e.key.toLowerCase();
-			else if (elem.nextElementSibling) elem.nextElementSibling.value = e.key.toLowerCase();
-			elem.nextElementSibling?.focus();
-			FindGuess();
-		} else {
-			console.log(e, e.keyCode);
-		}
+let addEventListenerToInput = () => {
+	document.querySelectorAll("#current_info > input").forEach((elem) => {
+		elem.addEventListener("keydown", (e) => {
+			e.preventDefault();
+			if (
+				match(e, "ArrowRight", 39) ||
+				match(e, "ArrowDown", 40) ||
+				(match(e, "Tab", 9) && !e.shiftKey)
+			) {
+				elem.nextElementSibling?.focus();
+			} else if (
+				match(e, "ArrowLeft", 37) ||
+				match(e, "ArrowUp", 38) ||
+				(match(e, "Tab", 9) && e.shiftKey)
+			) {
+				elem.previousElementSibling?.focus();
+			} else if (match(e, "Backspace", 8)) {
+				elem.previousElementSibling?.focus();
+				if (elem.value != "") elem.value = "";
+				FindGuess();
+			} else if (e.key.toLowerCase().match(/^[a-z0-9\-]$/)) {
+				if (elem.value == "") elem.value = e.key.toLowerCase();
+				else if (elem.nextElementSibling) elem.nextElementSibling.value = e.key.toLowerCase();
+				elem.nextElementSibling?.focus();
+				FindGuess();
+			} else {
+				console.log(e, e.keyCode);
+			}
+		});
 	});
-});
+};
+addEventListenerToInput();
 
 let blacklistedChar = () => {
 	return [
@@ -153,6 +156,7 @@ Promise.all([
 		wordlistNew.yourdictionary = yourdictionary.replaceAll("\r", "").split("\n");
 		console.log(new Date(), "All wordlists have been loaded");
 	})
+	.then(FindGuess)
 	.catch((err) => {
 		console.error("Error while fetching wordlists", err);
 	});
@@ -175,3 +179,35 @@ const updateWordlist = () => {
 document
 	.querySelectorAll("#dictionary")
 	.forEach((elem) => elem.addEventListener("change", updateWordlist));
+
+// JS for letter updater
+let letters = 8;
+let addInputs = () => {
+	document.querySelector("#current_info").innerHTML = "";
+	new Array(letters)
+		.fill(0)
+		.map((_, i) => {
+			let elem = document.createElement("input");
+			elem.type = "text";
+			// elem.maxLength = 1;
+			elem.classList.add("guess");
+			elem.setAttribute("n", i + 1);
+			return elem;
+		})
+		.forEach((elem) => document.querySelector("#current_info").appendChild(elem));
+	addEventListenerToInput();
+	document.getElementById("no_of_letters").value = letters;
+	FindGuess();
+};
+
+document.querySelector('[data-action="increment"]').addEventListener("click", () => {
+	letters++;
+	addInputs();
+});
+
+document.querySelector('[data-action="decrement"]').addEventListener("click", () => {
+	if (letters > 1) {
+		letters--;
+		addInputs();
+	}
+});

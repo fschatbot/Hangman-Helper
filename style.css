@@ -8,7 +8,7 @@ body {
 }
 
 .guess {
-	@apply border border-b-2 rounded-md text-center w-12 h-12
+	@apply border border-b-2 rounded-md text-center w-12 h-12 ml-2
 	text-2xl border-gray-200
 	focus-within:outline-none focus-within:border-gray-300 focus-within:border-b-[#0076D6];
 }
