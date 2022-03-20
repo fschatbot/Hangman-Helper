@@ -63,6 +63,13 @@
 			<div id="matched_words" class="guesses"></div>
 			<div id="statistics" class="stats"></div>
 			<div class="config">
+				No of letters:
+				<div>
+					<button class="wordLenInc">+</button>
+					<input type="number" id="no_of_letters" value="8" class="wordLen" readonly />
+					<button class="wordLenDec">-</button>
+				</div>
+				<h3>Exclusions:</h3>
 				<input type="checkbox" name="" id="" />
 				<label for="">Keep words with only alphabets</label><br />
 				<input type="checkbox" name="" id="" />
@@ -71,6 +78,20 @@
 				<label for="">Exclude Numbers</label><br />
 				<input type="checkbox" name="" id="" />
 				<label for="">Exclude Freaky Characters</label><br />
+				<h3>Dictionarys:</h3>
+				<input type="checkbox" name="" id="" />
+				<label for="">Dictionary.com</label><br />
+				<input type="checkbox" name="" id="" />
+				<label for="">yourdictionary.com</label><br />
+				<input type="checkbox" name="" id="" />
+				<label for="">merriam-webster.com</label><br />
+				<input type="checkbox" name="" id="" />
+				<label for="">oxforddictionaries.com</label><br />
+				<input type="checkbox" name="" id="" />
+				<label for="">macmillandictionary.com</label><br />
+				<input type="checkbox" name="" id="" disabled checked />
+				<label for="">basic 500 words list</label><br />
+				<button>Purge Duplicate Words</button>
 			</div>
 		</div>
 	</body>
