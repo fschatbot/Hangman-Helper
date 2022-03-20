@@ -5,10 +5,24 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Hangman Guesser</title>
+
+		<!-- Meta Data -->
+		<link rel="icon" href="hang.ico" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<meta
+			name="description"
+			content="This site helps you in cheating hangman. Indexing though 670,000 words to help you hangman. Ad free, high speed, super customizable."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		<!-- Scripts and CSS Files -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fredoka&family=JetBrains+Mono&family=Mulish&display=swap"
+			rel="stylesheet"
+		/>
 		<link rel="stylesheet" href="app.css" />
 		<script defer src="script.js"></script>
-		<!-- Set hang.ico as icon -->
-		<link rel="icon" href="hang.ico" />
 	</head>
 
 	<body>
@@ -89,21 +103,21 @@
 			<div>
 				<h3 class="container-name">Config</h3>
 				<div class="config">
-					No of letters:
+					<label for="no_of_letters">No of letters:</label>
 					<div class="wordLen">
 						<button data-action="decrement">-</button>
 						<input type="text" id="no_of_letters" value="8" class="wordLenInp" disabled readonly />
 						<button data-action="increment">+</button>
 					</div>
 					<h3>Exclusions:</h3>
-					<input type="checkbox" name="" id="" />
-					<label for="">Keep words with only alphabets</label><br />
-					<input type="checkbox" name="" id="" />
-					<label for="">Remove Whitespaces</label><br />
-					<input type="checkbox" name="" id="" />
-					<label for="">Exclude Numbers</label><br />
-					<input type="checkbox" name="" id="" />
-					<label for="">Exclude Freaky Characters</label><br />
+					<input type="checkbox" name="onlyAlpha" id="onlyAlpha" />
+					<label for="onlyAlpha">Keep words with only alphabets</label><br />
+					<input type="checkbox" name="NoSpaces" id="NoSpaces" />
+					<label for="NoSpaces">Remove Whitespaces</label><br />
+					<input type="checkbox" name="NoNumbers" id="NoNumbers" />
+					<label for="NoNumbers">Exclude Numbers</label><br />
+					<input type="checkbox" name="NoFreaky" id="NoFreaky" />
+					<label for="NoFreaky">Exclude Freaky Characters</label><br />
 					<h3>Dictionarys:</h3>
 					<input type="checkbox" name="dictionary" id="dictionary" />
 					<label for="dictionary">
