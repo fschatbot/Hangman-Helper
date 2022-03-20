@@ -28,6 +28,15 @@ document.querySelectorAll("#current_info > input").forEach((elem) => {
 	});
 });
 
+let blacklistedChar = () => {
+	return [
+		...[...document.querySelectorAll(".keyboard > span[active]")].map((elem) => elem.textContent),
+		...[...document.querySelectorAll("#current_info > input")]
+			.map((inp) => inp.value)
+			.filter((a) => a),
+	];
+};
+
 function match(event, code, keycode) {
 	return (
 		event.code == code || event.key == code || event.keyCode == keycode || event.which == keycode
@@ -69,13 +78,11 @@ const FindGuess = () => {
 	});
 	document.querySelectorAll("#char_stats > div").forEach((elem) => elem.remove());
 	let totalChar = Object.values(charCount).reduce((accumulator, count) => accumulator + count, 0);
-	let blacklistedChar = [...document.querySelectorAll("#current_info > input")]
-		.map((inp) => inp.value)
-		.filter((a) => a);
-	console.log(blacklistedChar);
+	let BlackListed = blacklistedChar();
+	console.log(BlackListed);
 	Object.entries(charCount)
 		.sort((a, b) => b[1] - a[1])
-		.filter((a) => !blacklistedChar.includes(a[0]))
+		.filter((a) => !BlackListed.includes(a[0]))
 		.slice(0, 10)
 		.forEach(([char, count]) => {
 			let percent = Math.round((count / totalChar) * 100);
@@ -94,4 +101,11 @@ const FindGuess = () => {
 document.getElementById("purge_dup").addEventListener("click", () => {
 	wordlist = [...new Set(wordlist)];
 	FindGuess();
+});
+
+document.querySelectorAll(".keyboard > span").forEach((elem) => {
+	elem.addEventListener("click", () => {
+		elem.toggleAttribute("active");
+		FindGuess();
+	});
 });
