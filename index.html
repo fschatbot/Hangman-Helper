@@ -64,10 +64,10 @@
 			<div id="statistics" class="stats"></div>
 			<div class="config">
 				No of letters:
-				<div>
-					<button class="wordLenInc">+</button>
-					<input type="number" id="no_of_letters" value="8" class="wordLen" readonly />
-					<button class="wordLenDec">-</button>
+				<div class="wordLen">
+					<button data-action="decrement">-</button>
+					<input type="text" id="no_of_letters" value="8" class="wordLenInp" disabled readonly />
+					<button data-action="increment">+</button>
 				</div>
 				<h3>Exclusions:</h3>
 				<input type="checkbox" name="" id="" />
