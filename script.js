@@ -61,7 +61,7 @@ const FindGuess = () => {
 	});
 	let value = RegExp(
 		`^${[...document.querySelectorAll("#current_info > input")]
-			.map((inp) => (inp.value ? inp.value : "."))
+			.map((inp) => (inp.value ? inp.value : `[^${[...new Set(currentKeys.join(""))]}]`))
 			.join("")}$`
 	);
 	document.getElementById("matched_words").innerHTML = "";
