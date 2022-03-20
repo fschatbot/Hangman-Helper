@@ -90,3 +90,8 @@ const FindGuess = () => {
 			document.getElementById("char_stats").appendChild(elem);
 		});
 };
+
+document.getElementById("purge_dup").addEventListener("click", () => {
+	wordlist = [...new Set(wordlist)];
+	FindGuess();
+});
