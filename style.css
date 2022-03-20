@@ -100,6 +100,10 @@ h3.container-name {
 	hover:text-white hover:bg-rose-500 hover:border-rose-500;
 }
 
-span[active] {
-	@apply bg-blue-300;
+span[blacklisted] {
+	@apply bg-red-300;
+}
+
+span[used] {
+	@apply bg-green-300;
 }

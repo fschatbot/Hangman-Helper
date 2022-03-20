@@ -30,7 +30,9 @@ document.querySelectorAll("#current_info > input").forEach((elem) => {
 
 let blacklistedChar = () => {
 	return [
-		...[...document.querySelectorAll(".keyboard > span[active]")].map((elem) => elem.textContent),
+		...[...document.querySelectorAll(".keyboard > span[blacklisted]")].map(
+			(elem) => elem.textContent
+		),
 		...[...document.querySelectorAll("#current_info > input")]
 			.map((inp) => inp.value)
 			.filter((a) => a),
@@ -105,7 +107,7 @@ document.getElementById("purge_dup").addEventListener("click", () => {
 
 document.querySelectorAll(".keyboard > span").forEach((elem) => {
 	elem.addEventListener("click", () => {
-		elem.toggleAttribute("active");
+		elem.toggleAttribute("blacklisted");
 		FindGuess();
 	});
 });
