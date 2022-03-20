@@ -46,7 +46,7 @@ function match(event, code, keycode) {
 }
 
 let wordlist = [];
-fetch("words/dictonary.txt")
+fetch("words/basic_500.txt")
 	.then((res) => res.text())
 	.then((text) => text.replaceAll("\r", "").split("\n"))
 	.then((words) => (wordlist = wordlist.concat(words)));
@@ -130,3 +130,48 @@ Object.values(keyboard).forEach((elem) => {
 		}
 	});
 });
+
+// JS for Config
+let wordlistNew = {};
+
+Promise.all([
+	fetch("words/basic_500.txt"),
+	fetch("words/dictionary.txt"),
+	fetch("words/macmillan.txt"),
+	fetch("words/merriam.txt"),
+	fetch("words/oxford.txt"),
+	fetch("words/yourdictionary.txt"),
+])
+	.then((res) => Promise.all(res.map((res) => res.text())))
+	.then(([basic_500, dictionary, macmillian, merriam, oxford, yourdictionary]) => {
+		console.log(new Date(), "All wordlists have been fetched");
+		wordlistNew.basic_500 = basic_500.replaceAll("\r", "").split("\n");
+		wordlistNew.dictionary = dictionary.replaceAll("\r", "").split("\n");
+		wordlistNew.macmillian = macmillian.replaceAll("\r", "").split("\n");
+		wordlistNew.merriam = merriam.replaceAll("\r", "").split("\n");
+		wordlistNew.oxford = oxford.replaceAll("\r", "").split("\n");
+		wordlistNew.yourdictionary = yourdictionary.replaceAll("\r", "").split("\n");
+		console.log(new Date(), "All wordlists have been loaded");
+	})
+	.catch((err) => {
+		console.error("Error while fetching wordlists", err);
+	});
+
+const updateWordlist = () => {
+	wordlist = wordlistNew.basic_500;
+	if (document.querySelector('input[name="dictionary"]').checked)
+		wordlist = wordlist.concat(wordlistNew.dictionary);
+	if (document.querySelector('input[name="macmillan"]').checked)
+		wordlist = wordlist.concat(wordlistNew.macmillian);
+	if (document.querySelector('input[name="merriam-webster"]').checked)
+		wordlist = wordlist.concat(wordlistNew.merriam);
+	if (document.querySelector('input[name="oxford"]').checked)
+		wordlist = wordlist.concat(wordlistNew.oxford);
+	if (document.querySelector('input[name="yourdictionary"]').checked)
+		wordlist = wordlist.concat(wordlistNew.yourdictionary);
+	FindGuess();
+};
+
+document
+	.querySelectorAll("#dictionary")
+	.forEach((elem) => elem.addEventListener("change", updateWordlist));
