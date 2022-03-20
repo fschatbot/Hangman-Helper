@@ -20,7 +20,7 @@ def scrap_dictionary() -> list:
 async def save_dictionary():
 	words = scrap_dictionary()
 	with open("words/dictonary.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(words))
+		file.write('\n'.join(list(set(words))))
 
 # https://www.yourdictionary.com/
 def parse_letter_yourdictionary(resp) -> list:
@@ -41,7 +41,7 @@ async def scrap_yourdictionary() -> list:
 async def save_yourdictionary():
 	words = await scrap_yourdictionary()
 	with open("words/yourdictionary.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(words))
+		file.write('\n'.join(list(set(words))))
 
 # https://www.merriam-webster.com/dictionary/
 def parse_letter_merriam(resp) -> list:
@@ -62,7 +62,7 @@ async def scrap_merriam() -> list:
 async def save_merriam():
 	words = await scrap_merriam()
 	with open("words/merriam.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(words))
+		file.write('\n'.join(list(set(words))))
 
 # https://www.oxforddictionaries.com/
 
@@ -75,7 +75,7 @@ def scrap_oxford() -> list:
 async def save_oxford():
 	words = scrap_oxford()
 	with open("words/oxford.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(words))
+		file.write('\n'.join(list(set(words))))
 
 # https://www.macmillandictionary.com/
 def get_letter_macmillan(letter) -> list:
@@ -98,7 +98,7 @@ def scrap_macmillan() -> list:
 async def save_macmillan():
 	words = scrap_macmillan()
 	with open("words/macmillan.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(words))
+		file.write('\n'.join(list(set(words))))
 
 async def main():
 	await asyncio.gather(
