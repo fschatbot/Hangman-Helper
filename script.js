@@ -66,5 +66,22 @@ const FindGuess = () => {
 			else charCount[char.toLowerCase()] = 1;
 		});
 	});
+	document.querySelectorAll("#char_stats > div").forEach((elem) => elem.remove());
+	let totalChar = Object.values(charCount).reduce((accumulator, count) => accumulator + count, 0);
+	Object.entries(charCount)
+		.sort((a, b) => b[1] - a[1])
+		.slice(0, 10)
+		.forEach(([char, count]) => {
+			let percent = Math.round((count / totalChar) * 100);
+			let elem = document.importNode(
+				document.querySelector("template[letter-stats]").content.querySelector("div"),
+				true
+			);
+
+			elem.querySelector("[letter-name]").textContent = char.toUpperCase();
+			elem.querySelector("[letter-percentage]").textContent = percent + "%";
+			elem.querySelector("[progressbar-thumb]").style.width = percent + "%";
+			document.getElementById("char_stats").appendChild(elem);
+		});
 	console.log(matchedWords, charCount);
 };
