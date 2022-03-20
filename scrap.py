@@ -22,7 +22,7 @@ def scrap_dictionary() -> list:
 
 async def save_dictionary():
 	words = scrap_dictionary()
-	with open("words/dictonary.txt","w",encoding="utf-8") as file:
+	with open("words/dictionary.txt","w",encoding="utf-8") as file:
 		file.write('\n'.join(list(set(words))))
 
 # https://www.yourdictionary.com/
