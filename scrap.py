@@ -126,7 +126,7 @@ async def save_macmillan():
 async def basic_500():
 	resp = requests.get("https://gist.githubusercontent.com/theRemix/48181ee5d45c9f01033a/raw/43f509afd334734895b8f0ded93ba8e70c0b5a68/").text
 	with open("words/basic_500.txt","w",encoding="utf-8") as file:
-		file.write(resp)
+		file.write(resp.lower())
 
 async def main():
 	await asyncio.gather(
