@@ -101,9 +101,9 @@ h3.container-name {
 }
 
 span[blacklisted] {
-	@apply bg-red-300;
+	@apply bg-red-300 hover:bg-red-400;
 }
 
 span[used] {
-	@apply bg-green-300;
+	@apply bg-green-300 hover:bg-green-400;
 }
