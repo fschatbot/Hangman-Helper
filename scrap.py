@@ -24,7 +24,7 @@ def scrap_dictionary() -> list:
 async def save_dictionary():
 	words = scrap_dictionary()
 	with open("words/dictionary.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(list(set(words))))
+		file.write('\n'.join(list(set(word.lower() for word in words))))
 
 # https://www.yourdictionary.com/
 def parse_letter_yourdictionary(resp) -> list:
@@ -45,7 +45,7 @@ async def scrap_yourdictionary() -> list:
 async def save_yourdictionary():
 	words = await scrap_yourdictionary()
 	with open("words/yourdictionary.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(list(set(words))))
+		file.write('\n'.join(list(set(word.lower() for word in words))))
 
 # https://www.merriam-webster.com/dictionary/
 # This one was the most trickiest one to scrape
@@ -83,7 +83,7 @@ async def scrap_merriam() -> list:
 async def save_merriam():
 	words = await scrap_merriam()
 	with open("words/merriam.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(list(set(words))))
+		file.write('\n'.join(list(set(word.lower() for word in words))))
 
 # https://www.oxforddictionaries.com/
 
@@ -99,7 +99,7 @@ async def scrap_oxford() -> list:
 async def save_oxford():
 	words = await scrap_oxford()
 	with open("words/oxford.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(list(set(words))))
+		file.write('\n'.join(list(set(word.lower() for word in words))))
 
 # https://www.macmillandictionary.com/
 def get_letter_macmillan(resp) -> list:
@@ -121,7 +121,7 @@ async def scrap_macmillan() -> list:
 async def save_macmillan():
 	words = await scrap_macmillan()
 	with open("words/macmillan.txt","w",encoding="utf-8") as file:
-		file.write('\n'.join(list(set(words))))
+		file.write('\n'.join(list(set(word.lower() for word in words))))
 
 async def basic_500():
 	resp = requests.get("https://gist.githubusercontent.com/theRemix/48181ee5d45c9f01033a/raw/43f509afd334734895b8f0ded93ba8e70c0b5a68/").text
