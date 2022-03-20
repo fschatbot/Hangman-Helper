@@ -107,3 +107,9 @@ span[blacklisted] {
 span[used] {
 	@apply bg-green-300 hover:bg-green-400;
 }
+
+a {
+	@apply font-medium underline
+	text-sky-600 hover:text-sky-700 decoration-sky-300 hover:decoration-sky-400
+	visited:text-indigo-600 hover:visited:text-indigo-700;
+}
