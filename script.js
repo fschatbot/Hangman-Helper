@@ -119,7 +119,9 @@ let keyboard = [...document.querySelectorAll(".keyboard > span")].reduce((acc, e
 
 Object.values(keyboard).forEach((elem) => {
 	elem.addEventListener("click", () => {
-		elem.toggleAttribute("blacklisted");
-		FindGuess();
+		if (!elem.hasArrtibute("used")) {
+			elem.toggleAttribute("blacklisted");
+			FindGuess();
+		}
 	});
 });
