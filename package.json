@@ -1,5 +1,6 @@
 {
 	"devDependencies": {
+		"@tailwindcss/forms": "^0.5.0",
 		"ps-scrollbar-tailwind": "^0.0.1",
 		"tailwindcss": "^3.0.23"
 	},

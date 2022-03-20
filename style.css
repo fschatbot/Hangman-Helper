@@ -9,7 +9,7 @@ body {
 
 .guess {
 	@apply border border-b-2 rounded-md text-center w-12 h-12
-	text-2xl
+	text-2xl border-gray-200
 	focus-within:outline-none focus-within:border-gray-300 focus-within:border-b-[#0076D6];
 }
 
@@ -46,3 +46,11 @@ body {
 	@apply w-10 h-10 cursor-pointer bg-slate-300 rounded-md
 	flex justify-center items-center uppercase hover:bg-slate-400;
 }
+
+input[type="checkbox"] {
+	@apply rounded border-gray-300 text-indigo-600 shadow-sm cursor-pointer disabled:cursor-not-allowed
+	focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200
+	focus:ring-opacity-50
+	disabled:bg-gray-200 disabled:hover:bg-gray-300;
+}
+
