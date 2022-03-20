@@ -25,11 +25,11 @@ body {
 }
 
 .container {
-	@apply flex flex-row mt-5;
+	@apply flex flex-row mt-5 space-x-5;
 }
 
 .guesses {
-	@apply flex flex-col overflow-y-scroll scrollbar bg-gray-50 border border-gray-200 shadow-md mr-5
+	@apply flex flex-col overflow-y-scroll scrollbar bg-gray-50 border border-gray-200 shadow-md
 	max-h-80 min-w-[10rem] p-3 rounded-md text-center;
 }
 .guesses span {
@@ -38,7 +38,7 @@ body {
 
 /* keyboard CSS */
 .keyboard {
-	@apply grid grid-cols-6 gap-2 grid-flow-row mx-5;
+	@apply grid grid-cols-6 gap-2 grid-flow-row;
 	font-family: "Mulish", sans-serif;
 }
 
@@ -69,7 +69,8 @@ input[type="checkbox"] {
 }
 
 #char_stats {
-	@apply w-60 h-80 bg-gray-50 border border-gray-200 shadow-md mr-5 rounded-md p-3;
+	@apply w-60 h-80 overflow-y-auto shadow-md rounded-md p-3
+	bg-gray-50 border border-gray-200 scrollbar;
 }
 
 .progress {
