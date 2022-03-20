@@ -2,6 +2,7 @@ import grequests
 import requests
 from bs4 import BeautifulSoup
 import asyncio
+import re
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 number = '0123456789'
@@ -47,20 +48,37 @@ async def save_yourdictionary():
 		file.write('\n'.join(list(set(words))))
 
 # https://www.merriam-webster.com/dictionary/
-def parse_letter_merriam(resp) -> list:
-	letter = resp.url.split('/')[-1]
-	soup = BeautifulSoup(resp.text, 'html.parser')
-	word_elems = soup.find_all(class_='entry-word')
-	words = [word.text.replace("\n", "").strip() for word in word_elems]
-	print("Completed Parsing For %s (merriam-webster.com)" % letter)
-	return words
+# This one was the most trickiest one to scrape
+async def parse_letter_merriam(letter) -> list:
+	# Blank Request to get the page count
+	resp = requests.get(f"https://www.merriam-webster.com/browse/dictionary/{letter}/", headers=header)
+	# No need to put it though BS4 to waste time
+	total_pages = int(re.search(r"page \d+ of (\d+)", resp.text).group(1))
+	print(f"Total Pages for {letter} is {total_pages}")
+	# Get all the responses as fast as possible
+	rs = grequests.imap([grequests.get(f"https://www.merriam-webster.com/browse/dictionary/{letter}/{index}/", headers=header) for index in range(1, total_pages+1)])
+	print(f"Requested {total_pages} Pages for {letter}")
+	# Convert all resposnes to BS4
+	loop = asyncio.get_event_loop()
+	soup_list = await asyncio.gather(*[loop.run_in_executor(None, BeautifulSoup, resp.text, 'html.parser') for resp in rs])
+	print(f"Completed Parsing For {letter} (merriam-webster.com)")
+	# Get all the words
+	word_lists = []
+	for i, soup in enumerate(soup_list):
+		try:
+			word_elems = soup.find(class_="entries").find_all("a")
+		except AttributeError:
+			print(f"No Words for {letter} {i}")
+			continue
+		words = [word.text.replace("\n", "").strip() for word in word_elems]
+		word_lists.extend(words)
+	print("Completed Scraping For %s (merriam-webster.com)" % letter)
+	return word_lists
 
 async def scrap_merriam() -> list:
-	rs = grequests.imap([grequests.get(f"https://www.merriam-webster.com/dictionary/{char}") for char in alphabet])
-	loop = asyncio.get_event_loop()
-	wordlist = await asyncio.gather(*[loop.run_in_executor(None, parse_letter_merriam, resp) for resp in rs])
-	# https://www.programiz.com/python-programming/examples/flatten-nested-list
-	return sum(wordlist, [])
+	# There is an extra 0 to even get those special numbers
+	words = await asyncio.gather(*[parse_letter_merriam(letter) for letter in alphabet + "0"])
+	return sum(words, [])
 
 async def save_merriam():
 	words = await scrap_merriam()
@@ -114,9 +132,9 @@ async def main():
 	await asyncio.gather(
 		save_oxford(),
 		save_macmillan(),
-        save_yourdictionary(),
+        save_yourdictionary(), # Second Slowest
         save_dictionary(),
-		save_merriam(),
+		save_merriam(), # Slow as HELL
 		basic_500()
     )
 
