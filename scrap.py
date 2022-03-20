@@ -1,4 +1,5 @@
 import grequests
+import requests
 from bs4 import BeautifulSoup
 import asyncio
 
@@ -73,7 +74,9 @@ async def scrap_oxford() -> list:
 	rs = grequests.map([grequests.get(f"https://www.oxfordlearnersdictionaries.com/wordlists/oxford3000-5000/", headers=header)])
 	resp = [*rs][0]
 	soup = BeautifulSoup(resp.text, 'html.parser')
-	return [word.text.replace("\n", "").strip() for word in soup.find(class_='top-g').find_all('a')]
+	words = [word.text.replace("\n", "").strip() for word in soup.find(class_='top-g').find_all('a')]
+	print("Completed Parsing For oxforddictionaries.com")
+	return words
 
 async def save_oxford():
 	words = await scrap_oxford()
@@ -102,8 +105,10 @@ async def save_macmillan():
 	with open("words/macmillan.txt","w",encoding="utf-8") as file:
 		file.write('\n'.join(list(set(words))))
 
-def exception_handler(request, exception):
-	print(request.response, exception)
+async def basic_500():
+	resp = requests.get("https://gist.githubusercontent.com/theRemix/48181ee5d45c9f01033a/raw/43f509afd334734895b8f0ded93ba8e70c0b5a68/").text
+	with open("words/basic_500.txt","w",encoding="utf-8") as file:
+		file.write(resp)
 
 async def main():
 	await asyncio.gather(
@@ -111,7 +116,8 @@ async def main():
 		save_macmillan(),
         save_yourdictionary(),
         save_dictionary(),
-		save_merriam()
+		save_merriam(),
+		basic_500()
     )
 
 if __name__ == '__main__':
