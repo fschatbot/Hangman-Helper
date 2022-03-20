@@ -66,6 +66,7 @@ const FindGuess = () => {
 	);
 	document.getElementById("matched_words").innerHTML = "";
 	// Filter the list of words
+	let BlackListed = blacklistedChar();
 	matchedWords = wordlist.filter((word) => value.test(word.toLowerCase()));
 	// Add sample words
 	matchedWords
@@ -87,8 +88,6 @@ const FindGuess = () => {
 	});
 	document.querySelectorAll("#char_stats > div").forEach((elem) => elem.remove());
 	let totalChar = Object.values(charCount).reduce((accumulator, count) => accumulator + count, 0);
-	let BlackListed = blacklistedChar();
-	console.log(BlackListed);
 	Object.entries(charCount)
 		.sort((a, b) => b[1] - a[1])
 		.filter((a) => !BlackListed.includes(a[0]))
@@ -119,7 +118,7 @@ let keyboard = [...document.querySelectorAll(".keyboard > span")].reduce((acc, e
 
 Object.values(keyboard).forEach((elem) => {
 	elem.addEventListener("click", () => {
-		if (!elem.hasArrtibute("used")) {
+		if (!elem.hasAttribute("used")) {
 			elem.toggleAttribute("blacklisted");
 			FindGuess();
 		}
