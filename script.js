@@ -52,6 +52,13 @@ fetch("words/dictonary.txt")
 	.then((words) => (wordlist = wordlist.concat(words)));
 
 const FindGuess = () => {
+	let currentKeys = [...document.querySelectorAll("#current_info > input")]
+		.map((elem) => elem.value)
+		.filter((a) => a);
+	Object.values(keyboard).forEach((elem) => {
+		if (currentKeys.includes(elem.textContent)) elem.setAttribute("used", "");
+		else elem.removeAttribute("used");
+	});
 	let value = RegExp(
 		`^${[...document.querySelectorAll("#current_info > input")]
 			.map((inp) => (inp.value ? inp.value : "."))
@@ -105,7 +112,12 @@ document.getElementById("purge_dup").addEventListener("click", () => {
 	FindGuess();
 });
 
-document.querySelectorAll(".keyboard > span").forEach((elem) => {
+let keyboard = [...document.querySelectorAll(".keyboard > span")].reduce((acc, elem) => {
+	acc[elem.textContent] = elem;
+	return acc;
+}, {});
+
+Object.values(keyboard).forEach((elem) => {
 	elem.addEventListener("click", () => {
 		elem.toggleAttribute("blacklisted");
 		FindGuess();
