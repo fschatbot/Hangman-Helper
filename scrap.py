@@ -1,5 +1,4 @@
 import grequests
-import requests
 from bs4 import BeautifulSoup
 import asyncio
 
@@ -66,39 +65,42 @@ async def save_merriam():
 
 # https://www.oxforddictionaries.com/
 
-def scrap_oxford() -> list:
-	session = requests.Session()
-	response = session.get('https://www.oxfordlearnersdictionaries.com/wordlists/oxford3000-5000/')
-	soup = BeautifulSoup(response.text, 'html.parser')
+async def scrap_oxford() -> list:
+	# For some reason, this is just showing a list of None
+	rs = grequests.map([grequests.get(f"https://www.oxfordlearnersdictionaries.com/wordlists/oxford3000-5000/")], exception_handler=exception_handler)
+	resp = [*rs][0]
+	soup = BeautifulSoup(resp.text, 'html.parser')
 	return [word.text.replace("\n", "").strip() for word in soup.find(class_='top-g').find_all('a')]
 
 async def save_oxford():
-	words = scrap_oxford()
+	words = await scrap_oxford()
 	with open("words/oxford.txt","w",encoding="utf-8") as file:
 		file.write('\n'.join(list(set(words))))
 
 # https://www.macmillandictionary.com/
-def get_letter_macmillan(letter) -> list:
-	url = f"https://www.macmillandictionary.com/dictionary/british/{letter}"
-	response = requests.get(url)
-	print("Server Response Code for char %s: %s" % (letter, response.status_code))
-	soup = BeautifulSoup(response.text, 'html.parser')
+def get_letter_macmillan(resp) -> list:
+	letter = resp.url.split('/')[-1]
+	soup = BeautifulSoup(resp.text, 'html.parser')
 	word_elems = soup.find_all(class_='hw')
 	words = [word.text.replace("\n", "").strip() for word in word_elems]
-	# print(words)
+	print("Completed Parsing For %s (macmillandictionary.com)" % letter)
 	return words
 
-def scrap_macmillan() -> list:
-	word_list = []
-	responses = [get_letter_macmillan(char) for char in alphabet]
-	for res in responses:
-		word_list.extend(res)
-	return word_list
+async def scrap_macmillan() -> list:
+	# For some reason, this is just showing a list of None
+	rs = grequests.imap([grequests.get(f"https://www.macmillandictionary.com/browse/collocations/british/{char}", json=True) for char in alphabet], exception_handler=exception_handler)
+	loop = asyncio.get_event_loop()
+	wordlist = await asyncio.gather(*[loop.run_in_executor(None, get_letter_macmillan, resp) for resp in rs])
+	# https://www.programiz.com/python-programming/examples/flatten-nested-list
+	return sum(wordlist, [])
 
 async def save_macmillan():
-	words = scrap_macmillan()
+	words = await scrap_macmillan()
 	with open("words/macmillan.txt","w",encoding="utf-8") as file:
 		file.write('\n'.join(list(set(words))))
+
+def exception_handler(request, exception):
+	print(request.response, exception)
 
 async def main():
 	await asyncio.gather(
