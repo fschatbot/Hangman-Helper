@@ -62,7 +62,7 @@ const FindGuess = () => {
 	// Get how many times does a char appears in the list of words
 	let charCount = {};
 	matchedWords.forEach((word) => {
-		word.split("").forEach((char) => {
+		[...new Set(word.split(""))].forEach((char) => {
 			if (charCount[char.toLowerCase()]) charCount[char.toLowerCase()]++;
 			else charCount[char.toLowerCase()] = 1;
 		});
