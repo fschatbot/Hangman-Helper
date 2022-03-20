@@ -1,7 +1,6 @@
 document.querySelectorAll("#current_info > input").forEach((elem) => {
 	elem.addEventListener("keydown", (e) => {
 		e.preventDefault();
-		console.log(e, e.keyCode);
 		if (
 			match(e, "ArrowRight", 39) ||
 			match(e, "ArrowDown", 40) ||
@@ -23,6 +22,8 @@ document.querySelectorAll("#current_info > input").forEach((elem) => {
 			else if (elem.nextElementSibling) elem.nextElementSibling.value = e.key.toLowerCase();
 			elem.nextElementSibling?.focus();
 			FindGuess();
+		} else {
+			console.log(e, e.keyCode);
 		}
 	});
 });
@@ -68,8 +69,13 @@ const FindGuess = () => {
 	});
 	document.querySelectorAll("#char_stats > div").forEach((elem) => elem.remove());
 	let totalChar = Object.values(charCount).reduce((accumulator, count) => accumulator + count, 0);
+	let blacklistedChar = [...document.querySelectorAll("#current_info > input")]
+		.map((inp) => inp.value)
+		.filter((a) => a);
+	console.log(blacklistedChar);
 	Object.entries(charCount)
 		.sort((a, b) => b[1] - a[1])
+		.filter((a) => !blacklistedChar.includes(a[0]))
 		.slice(0, 10)
 		.forEach(([char, count]) => {
 			let percent = Math.round((count / totalChar) * 100);
@@ -83,5 +89,4 @@ const FindGuess = () => {
 			elem.querySelector("[progressbar-thumb]").style.width = percent + "%";
 			document.getElementById("char_stats").appendChild(elem);
 		});
-	console.log(matchedWords, charCount);
 };
