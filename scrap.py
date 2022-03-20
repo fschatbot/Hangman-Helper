@@ -5,6 +5,9 @@ import asyncio
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 number = '0123456789'
 
+# This fix is brilliant. https://stackoverflow.com/a/65662895/13703806
+# Took me 2 days to find it
+header = {"User-Agent" : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"}
 # https://www.dictionary.com/
 def scrap_dictionary() -> list:
 	rs = [grequests.get(f"https://api-portal.dictionary.com/dcom/list/{letter}?limit=100000") for letter in alphabet]
@@ -67,7 +70,7 @@ async def save_merriam():
 
 async def scrap_oxford() -> list:
 	# For some reason, this is just showing a list of None
-	rs = grequests.map([grequests.get(f"https://www.oxfordlearnersdictionaries.com/wordlists/oxford3000-5000/")], exception_handler=exception_handler)
+	rs = grequests.map([grequests.get(f"https://www.oxfordlearnersdictionaries.com/wordlists/oxford3000-5000/", headers=header)])
 	resp = [*rs][0]
 	soup = BeautifulSoup(resp.text, 'html.parser')
 	return [word.text.replace("\n", "").strip() for word in soup.find(class_='top-g').find_all('a')]
@@ -79,7 +82,7 @@ async def save_oxford():
 
 # https://www.macmillandictionary.com/
 def get_letter_macmillan(resp) -> list:
-	letter = resp.url.split('/')[-1]
+	letter = resp.url.split('/')[-2]
 	soup = BeautifulSoup(resp.text, 'html.parser')
 	word_elems = soup.find_all(class_='hw')
 	words = [word.text.replace("\n", "").strip() for word in word_elems]
@@ -88,7 +91,7 @@ def get_letter_macmillan(resp) -> list:
 
 async def scrap_macmillan() -> list:
 	# For some reason, this is just showing a list of None
-	rs = grequests.imap([grequests.get(f"https://www.macmillandictionary.com/browse/collocations/british/{char}", json=True) for char in alphabet], exception_handler=exception_handler)
+	rs = grequests.imap([grequests.get(f"https://www.macmillandictionary.com/browse/collocations/british/{char}/", headers=header) for char in alphabet])
 	loop = asyncio.get_event_loop()
 	wordlist = await asyncio.gather(*[loop.run_in_executor(None, get_letter_macmillan, resp) for resp in rs])
 	# https://www.programiz.com/python-programming/examples/flatten-nested-list
@@ -104,8 +107,8 @@ def exception_handler(request, exception):
 
 async def main():
 	await asyncio.gather(
-		# save_oxford(), # Not Working
-		# save_macmillan(), # Not Working (Same Reason as Oxford)
+		save_oxford(),
+		save_macmillan(),
         save_yourdictionary(),
         save_dictionary(),
 		save_merriam()
