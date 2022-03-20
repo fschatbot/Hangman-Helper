@@ -56,7 +56,7 @@ async def parse_letter_merriam(letter) -> list:
 	total_pages = int(re.search(r"page \d+ of (\d+)", resp.text).group(1))
 	print(f"Total Pages for {letter} is {total_pages}")
 	# Get all the responses as fast as possible
-	rs = grequests.imap([grequests.get(f"https://www.merriam-webster.com/browse/dictionary/{letter}/{index}/", headers=header) for index in range(1, total_pages+1)])
+	rs = grequests.map([grequests.get(f"https://www.merriam-webster.com/browse/dictionary/{letter}/{index}/", headers=header) for index in range(1, total_pages+1)])
 	print(f"Requested {total_pages} Pages for {letter}")
 	# Convert all resposnes to BS4
 	loop = asyncio.get_event_loop()
