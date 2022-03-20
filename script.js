@@ -66,8 +66,14 @@ const FindGuess = () => {
 	);
 	document.getElementById("matched_words").innerHTML = "";
 	// Filter the list of words
-	let BlackListed = blacklistedChar();
-	matchedWords = wordlist.filter((word) => value.test(word.toLowerCase()));
+	matchedWords = wordlist
+		.filter((word) => value.test(word.toLowerCase()))
+		.filter(
+			(word) =>
+				![...document.querySelectorAll(".keyboard > span[blacklisted]")]
+					.map((elem) => elem.textContent)
+					.some((l) => word.includes(l))
+		);
 	// Add sample words
 	matchedWords
 		.slice(0, 100)
@@ -87,13 +93,13 @@ const FindGuess = () => {
 		});
 	});
 	document.querySelectorAll("#char_stats > div").forEach((elem) => elem.remove());
-	let totalChar = Object.values(charCount).reduce((accumulator, count) => accumulator + count, 0);
+	let BlackListed = blacklistedChar();
 	Object.entries(charCount)
 		.sort((a, b) => b[1] - a[1])
 		.filter((a) => !BlackListed.includes(a[0]))
 		.slice(0, 10)
 		.forEach(([char, count]) => {
-			let percent = Math.round((count / totalChar) * 100);
+			let percent = Math.round((count / matchedWords.length) * 100);
 			let elem = document.importNode(
 				document.querySelector("template[letter-stats]").content.querySelector("div"),
 				true
