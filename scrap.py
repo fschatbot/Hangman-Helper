@@ -32,13 +32,11 @@ def parse_letter_yourdictionary(resp) -> list:
 	return words
 
 async def scrap_yourdictionary() -> list:
-	rs = [grequests.get(f"https://www.yourdictionary.com/index/{char}") for char in alphabet]
-	wordlist = []
+	rs = grequests.imap([grequests.get(f"https://www.yourdictionary.com/index/{char}") for char in alphabet])
 	loop = asyncio.get_event_loop()
-	for resp in grequests.imap(rs):
-		words = await loop.run_in_executor(None, parse_letter_yourdictionary, resp)
-		wordlist.extend(words)
-	return wordlist
+	wordlist = await asyncio.gather(*[loop.run_in_executor(None, parse_letter_yourdictionary, resp) for resp in rs])
+	# https://www.programiz.com/python-programming/examples/flatten-nested-list
+	return sum(wordlist, [])
 
 async def save_yourdictionary():
 	words = await scrap_yourdictionary()
@@ -46,25 +44,23 @@ async def save_yourdictionary():
 		file.write('\n'.join(words))
 
 # https://www.merriam-webster.com/dictionary/
-def get_letter_merriam(letter) -> list:
-	url = f"https://www.merriam-webster.com/dictionary/{letter}"
-	response = requests.get(url)
-	print("merriam-webster.com responsed with %s for %s" % (response.status_code, letter))
-	soup = BeautifulSoup(response.text, 'html.parser')
+def parse_letter_merriam(resp) -> list:
+	letter = resp.url.split('/')[-1]
+	soup = BeautifulSoup(resp.text, 'html.parser')
 	word_elems = soup.find_all(class_='entry-word')
 	words = [word.text.replace("\n", "").strip() for word in word_elems]
-	# print(words)
+	print("Completed Parsing For %s (merriam-webster.com)" % letter)
 	return words
 
-def scrap_merriam() -> list:
-	word_list = []
-	responses = [get_letter_merriam(char) for char in alphabet]
-	for res in responses:
-		word_list.extend(res)
-	return word_list
+async def scrap_merriam() -> list:
+	rs = grequests.imap([grequests.get(f"https://www.merriam-webster.com/dictionary/{char}") for char in alphabet])
+	loop = asyncio.get_event_loop()
+	wordlist = await asyncio.gather(*[loop.run_in_executor(None, parse_letter_merriam, resp) for resp in rs])
+	# https://www.programiz.com/python-programming/examples/flatten-nested-list
+	return sum(wordlist, [])
 
 async def save_merriam():
-	words = scrap_merriam()
+	words = await scrap_merriam()
 	with open("words/merriam.txt","w",encoding="utf-8") as file:
 		file.write('\n'.join(words))
 
@@ -109,7 +105,8 @@ async def main():
 		# save_oxford(), # Not Working
 		# save_macmillan(), # Not Working (Same Reason as Oxford)
         save_yourdictionary(),
-        save_dictionary()
+        save_dictionary(),
+		save_merriam()
     )
 
 if __name__ == '__main__':
