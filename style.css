@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Mulish&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka&family=Mulish&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -30,7 +30,7 @@ body {
 
 .guesses {
 	@apply flex flex-col overflow-y-scroll scrollbar bg-gray-50 border border-gray-200 shadow-md
-	max-h-80 min-w-[10rem] p-3 rounded-md text-center;
+	h-80 min-w-[10rem] p-3 rounded-md text-center;
 }
 .guesses span {
 	@apply border-b border-gray-400;
@@ -87,4 +87,9 @@ input[type="checkbox"] {
 
 .stats span {
 	@apply block;
+}
+
+h3.container-name {
+	@apply font-semibold tracking-wide text-lg;
+	font-family: "Fredoka", sans-serif;
 }

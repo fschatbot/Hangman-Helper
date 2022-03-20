@@ -32,78 +32,90 @@
 				<div class="left-leg"></div>
 				<div class="right-leg"></div>
 			</div>
-			<div class="keyboard">
-				<span>a</span>
-				<span>b</span>
-				<span>c</span>
-				<span>d</span>
-				<span>e</span>
-				<span>f</span>
-				<span>g</span>
-				<span>h</span>
-				<span>i</span>
-				<span>j</span>
-				<span>k</span>
-				<span>l</span>
-				<span>m</span>
-				<span>n</span>
-				<span>o</span>
-				<span>p</span>
-				<span>q</span>
-				<span>r</span>
-				<span>s</span>
-				<span>t</span>
-				<span>u</span>
-				<span>v</span>
-				<span>w</span>
-				<span>x</span>
-				<span>y</span>
-				<span>z</span>
-			</div>
-			<div id="matched_words" class="guesses"></div>
-			<div id="char_stats" class="stats">
-				<template letter-stats>
-					<div class="stats">
-						<span letter-name>F</span>
-						<div class="progress">
-							<div class="progress-bar" id="progress-bar">
-								<div class="progress-thumb" style="width: 17%" progressbar-thumb></div>
-							</div>
-							<label for="progress-bar" letter-percentage>100%</label>
-						</div>
-					</div>
-				</template>
-			</div>
-			<div class="config">
-				No of letters:
-				<div class="wordLen">
-					<button data-action="decrement">-</button>
-					<input type="text" id="no_of_letters" value="8" class="wordLenInp" disabled readonly />
-					<button data-action="increment">+</button>
+			<div>
+				<h3 class="container-name">Keyboard</h3>
+				<div class="keyboard">
+					<span>a</span>
+					<span>b</span>
+					<span>c</span>
+					<span>d</span>
+					<span>e</span>
+					<span>f</span>
+					<span>g</span>
+					<span>h</span>
+					<span>i</span>
+					<span>j</span>
+					<span>k</span>
+					<span>l</span>
+					<span>m</span>
+					<span>n</span>
+					<span>o</span>
+					<span>p</span>
+					<span>q</span>
+					<span>r</span>
+					<span>s</span>
+					<span>t</span>
+					<span>u</span>
+					<span>v</span>
+					<span>w</span>
+					<span>x</span>
+					<span>y</span>
+					<span>z</span>
 				</div>
-				<h3>Exclusions:</h3>
-				<input type="checkbox" name="" id="" />
-				<label for="">Keep words with only alphabets</label><br />
-				<input type="checkbox" name="" id="" />
-				<label for="">Remove Whitspaces</label><br />
-				<input type="checkbox" name="" id="" />
-				<label for="">Exclude Numbers</label><br />
-				<input type="checkbox" name="" id="" />
-				<label for="">Exclude Freaky Characters</label><br />
-				<h3>Dictionarys:</h3>
-				<input type="checkbox" name="" id="" />
-				<label for="">Dictionary.com</label><br />
-				<input type="checkbox" name="" id="" />
-				<label for="">yourdictionary.com</label><br />
-				<input type="checkbox" name="" id="" />
-				<label for="">merriam-webster.com</label><br />
-				<input type="checkbox" name="" id="" />
-				<label for="">oxforddictionaries.com</label><br />
-				<input type="checkbox" name="" id="" />
-				<label for="">macmillandictionary.com</label><br />
-				<input type="checkbox" name="" id="" disabled checked />
-				<label for="">basic 500 words list</label><br />
-				<button>Purge Duplicate Words</button>
+			</div>
+			<div>
+				<h3 class="container-name">Matched Words</h3>
+				<div id="matched_words" class="guesses"></div>
+			</div>
+			<div>
+				<h3 class="container-name">Recommened Next Guess</h3>
+				<div id="char_stats" class="stats">
+					<template letter-stats>
+						<div class="stats">
+							<span letter-name>F</span>
+							<div class="progress">
+								<div class="progress-bar" id="progress-bar">
+									<div class="progress-thumb" style="width: 17%" progressbar-thumb></div>
+								</div>
+								<label for="progress-bar" letter-percentage>100%</label>
+							</div>
+						</div>
+					</template>
+				</div>
+			</div>
+			<div>
+				<h3 class="container-name">Config</h3>
+				<div class="config">
+					No of letters:
+					<div class="wordLen">
+						<button data-action="decrement">-</button>
+						<input type="text" id="no_of_letters" value="8" class="wordLenInp" disabled readonly />
+						<button data-action="increment">+</button>
+					</div>
+					<h3>Exclusions:</h3>
+					<input type="checkbox" name="" id="" />
+					<label for="">Keep words with only alphabets</label><br />
+					<input type="checkbox" name="" id="" />
+					<label for="">Remove Whitspaces</label><br />
+					<input type="checkbox" name="" id="" />
+					<label for="">Exclude Numbers</label><br />
+					<input type="checkbox" name="" id="" />
+					<label for="">Exclude Freaky Characters</label><br />
+					<h3>Dictionarys:</h3>
+					<input type="checkbox" name="" id="" />
+					<label for="">Dictionary.com</label><br />
+					<input type="checkbox" name="" id="" />
+					<label for="">yourdictionary.com</label><br />
+					<input type="checkbox" name="" id="" />
+					<label for="">merriam-webster.com</label><br />
+					<input type="checkbox" name="" id="" />
+					<label for="">oxforddictionaries.com</label><br />
+					<input type="checkbox" name="" id="" />
+					<label for="">macmillandictionary.com</label><br />
+					<input type="checkbox" name="" id="" disabled checked />
+					<label for="">basic 500 words list</label><br />
+					<button>Purge Duplicate Words</button>
+				</div>
 			</div>
 		</div>
 	</body>
