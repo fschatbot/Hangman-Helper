@@ -2,17 +2,9 @@ let addEventListenerToInput = () => {
 	document.querySelectorAll("#current_info > input").forEach((elem) => {
 		elem.addEventListener("keydown", (e) => {
 			e.preventDefault();
-			if (
-				match(e, "ArrowRight", 39) ||
-				match(e, "ArrowDown", 40) ||
-				(match(e, "Tab", 9) && !e.shiftKey)
-			) {
+			if (match(e, "ArrowRight", 39) || match(e, "ArrowDown", 40) || (match(e, "Tab", 9) && !e.shiftKey)) {
 				elem.nextElementSibling?.focus();
-			} else if (
-				match(e, "ArrowLeft", 37) ||
-				match(e, "ArrowUp", 38) ||
-				(match(e, "Tab", 9) && e.shiftKey)
-			) {
+			} else if (match(e, "ArrowLeft", 37) || match(e, "ArrowUp", 38) || (match(e, "Tab", 9) && e.shiftKey)) {
 				elem.previousElementSibling?.focus();
 			} else if (match(e, "Backspace", 8)) {
 				elem.previousElementSibling?.focus();
@@ -33,19 +25,13 @@ addEventListenerToInput();
 
 let blacklistedChar = () => {
 	return [
-		...[...document.querySelectorAll(".keyboard > span[blacklisted]")].map(
-			(elem) => elem.textContent
-		),
-		...[...document.querySelectorAll("#current_info > input")]
-			.map((inp) => inp.value)
-			.filter((a) => a),
+		...[...document.querySelectorAll(".keyboard > span[blacklisted]")].map((elem) => elem.textContent),
+		...[...document.querySelectorAll("#current_info > input")].map((inp) => inp.value).filter((a) => a),
 	];
 };
 
 function match(event, code, keycode) {
-	return (
-		event.code == code || event.key == code || event.keyCode == keycode || event.which == keycode
-	);
+	return event.code == code || event.key == code || event.keyCode == keycode || event.which == keycode;
 }
 
 let wordlist = [];
@@ -55,28 +41,17 @@ fetch("words/basic_500.txt")
 	.then((words) => (wordlist = wordlist.concat(words)));
 
 const FindGuess = () => {
-	let currentKeys = [...document.querySelectorAll("#current_info > input")]
-		.map((elem) => elem.value)
-		.filter((a) => a);
+	let currentKeys = [...document.querySelectorAll("#current_info > input")].map((elem) => elem.value).filter((a) => a);
 	Object.values(keyboard).forEach((elem) => {
 		if (currentKeys.includes(elem.textContent)) elem.setAttribute("used", "");
 		else elem.removeAttribute("used");
 	});
-	let value = RegExp(
-		`^${[...document.querySelectorAll("#current_info > input")]
-			.map((inp) => (inp.value ? inp.value : `[^${[...new Set(currentKeys.join(""))]}]`))
-			.join("")}$`
-	);
+	let value = RegExp(`^${[...document.querySelectorAll("#current_info > input")].map((inp) => (inp.value ? inp.value : `[^${[...new Set(currentKeys.join(""))]}]`)).join("")}$`);
 	document.getElementById("matched_words").innerHTML = "";
 	// Filter the list of words
 	matchedWords = wordlist
 		.filter((word) => value.test(word.toLowerCase()))
-		.filter(
-			(word) =>
-				![...document.querySelectorAll(".keyboard > span[blacklisted]")]
-					.map((elem) => elem.textContent)
-					.some((l) => word.includes(l))
-		);
+		.filter((word) => ![...document.querySelectorAll(".keyboard > span[blacklisted]")].map((elem) => elem.textContent).some((l) => word.includes(l)));
 	// Add sample words
 	matchedWords
 		.slice(0, 100)
@@ -103,10 +78,7 @@ const FindGuess = () => {
 		.slice(0, 10)
 		.forEach(([char, count]) => {
 			let percent = Math.round((count / matchedWords.length) * 100);
-			let elem = document.importNode(
-				document.querySelector("template[letter-stats]").content.querySelector("div"),
-				true
-			);
+			let elem = document.importNode(document.querySelector("template[letter-stats]").content.querySelector("div"), true);
 
 			elem.querySelector("[letter-name]").textContent = char.toUpperCase();
 			elem.querySelector("[letter-percentage]").textContent = percent + "%";
@@ -137,14 +109,7 @@ Object.values(keyboard).forEach((elem) => {
 // JS for Config
 let wordlistNew = {};
 
-Promise.all([
-	fetch("words/basic_500.txt"),
-	fetch("words/dictionary.txt"),
-	fetch("words/macmillan.txt"),
-	fetch("words/merriam.txt"),
-	fetch("words/oxford.txt"),
-	fetch("words/yourdictionary.txt"),
-])
+Promise.all([fetch("words/basic_500.txt"), fetch("words/dictionary.txt"), fetch("words/macmillan.txt"), fetch("words/merriam.txt"), fetch("words/oxford.txt"), fetch("words/yourdictionary.txt")])
 	.then((res) => Promise.all(res.map((res) => res.text())))
 	.then(([basic_500, dictionary, macmillian, merriam, oxford, yourdictionary]) => {
 		console.log(new Date(), "All wordlists have been fetched");
@@ -163,23 +128,16 @@ Promise.all([
 
 const updateWordlist = () => {
 	wordlist = wordlistNew.basic_500;
-	if (document.querySelector('input[name="dictionary"]').checked)
-		wordlist = wordlist.concat(wordlistNew.dictionary);
-	if (document.querySelector('input[name="macmillan"]').checked)
-		wordlist = wordlist.concat(wordlistNew.macmillian);
-	if (document.querySelector('input[name="merriam-webster"]').checked)
-		wordlist = wordlist.concat(wordlistNew.merriam);
-	if (document.querySelector('input[name="oxford"]').checked)
-		wordlist = wordlist.concat(wordlistNew.oxford);
-	if (document.querySelector('input[name="yourdictionary"]').checked)
-		wordlist = wordlist.concat(wordlistNew.yourdictionary);
+	if (document.querySelector('input[name="dictionary"]').checked) wordlist = wordlist.concat(wordlistNew.dictionary);
+	if (document.querySelector('input[name="macmillan"]').checked) wordlist = wordlist.concat(wordlistNew.macmillian);
+	if (document.querySelector('input[name="merriam-webster"]').checked) wordlist = wordlist.concat(wordlistNew.merriam);
+	if (document.querySelector('input[name="oxford"]').checked) wordlist = wordlist.concat(wordlistNew.oxford);
+	if (document.querySelector('input[name="yourdictionary"]').checked) wordlist = wordlist.concat(wordlistNew.yourdictionary);
 	document.querySelectorAll("#dictionary").forEach((elem) => elem.removeAttribute("disabled"));
 	FindGuess();
 };
 
-document
-	.querySelectorAll("#dictionary")
-	.forEach((elem) => elem.addEventListener("change", updateWordlist));
+document.querySelectorAll("#dictionary").forEach((elem) => elem.addEventListener("change", updateWordlist));
 
 // JS for letter updater
 let letters = 8;
