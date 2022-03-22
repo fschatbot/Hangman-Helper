@@ -173,6 +173,7 @@ const updateWordlist = () => {
 		wordlist = wordlist.concat(wordlistNew.oxford);
 	if (document.querySelector('input[name="yourdictionary"]').checked)
 		wordlist = wordlist.concat(wordlistNew.yourdictionary);
+	document.querySelectorAll("#dictionary").forEach((elem) => elem.removeAttribute("disabled"));
 	FindGuess();
 };
 
