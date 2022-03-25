@@ -208,3 +208,9 @@ document.querySelector("#NoFreaky[word-rules]").addEventListener("change", () =>
 	Config.NoFreaky = document.querySelector("#NoFreaky[word-rules]").checked;
 	FindGuess();
 });
+
+// Filters based on config
+const AlphaCheck = (word) => (Config.onlyAlpha ? /^[A-z]+$/.test(word) : true);
+const NoSpacesCheck = (word) => (Config.NoSpaces ? !word.includes(" ") : true);
+const NoNumbersCheck = (word) => (Config.NoNumbers ? !/\d/i.test(word) : true);
+const NoFreakyCheck = (word) => (Config.NoFreaky ? /^[A-Za-z0-9\s]+$/.test(word) : true);
