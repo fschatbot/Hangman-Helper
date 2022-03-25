@@ -1,3 +1,4 @@
 words/*.txt
 node_modules/
 app.css
+script.min.js
