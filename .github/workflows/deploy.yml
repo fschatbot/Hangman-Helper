@@ -33,6 +33,8 @@ jobs:
           pip install -r requirements.txt -q
           mkdir words
           npm run build
+      - name: Scrap words
+        run: |
           python scrap.py
       - name: Commit files
         run: |
