@@ -8,6 +8,6 @@
 	"scripts": {
 		"build": "npm run build:CSS && npm run build:JS",
 		"build:CSS": "npx tailwindcss -i style.css -o app.css -m",
-		"build:JS": "npx javascript-obfuscator --input script.js --output script.min.js --compact true --disable-console true --disable-debug false --self-defending true "
+		"build:JS": "npx javascript-obfuscator script.js --output script.min.js --compact true --disable-console true --disable-debug false --self-defending true "
 	}
 }
