@@ -185,5 +185,26 @@ document.querySelector("#onlyAlpha[word-rules]").addEventListener("change", () =
 		document.querySelector("#NoNumbers[word-rules]").removeAttribute("disabled");
 		document.querySelector("#NoFreaky[word-rules]").removeAttribute("disabled");
 	}
+	Config.onlyAlpha = document.querySelector("#onlyAlpha[word-rules]").checked;
+	FindGuess();
+});
+
+document.querySelector("#NoSpaces[word-rules]").addEventListener("change", () => {
+	Config.NoSpaces = document.querySelector("#NoSpaces[word-rules]").checked;
+	FindGuess();
+});
+
+document.querySelector("#NoNumbers[word-rules]").addEventListener("change", () => {
+	Config.NoNumbers = document.querySelector("#NoNumbers[word-rules]").checked;
+	FindGuess();
+});
+
+document.querySelector("#NoSpaces[word-rules]").addEventListener("change", () => {
+	Config.NoSpaces = document.querySelector("#NoSpaces[word-rules]").checked;
+	FindGuess();
+});
+
+document.querySelector("#NoFreaky[word-rules]").addEventListener("change", () => {
+	Config.NoFreaky = document.querySelector("#NoFreaky[word-rules]").checked;
 	FindGuess();
 });
