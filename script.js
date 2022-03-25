@@ -52,9 +52,12 @@ const FindGuess = () => {
 	let value = RegExp(`^${[...document.querySelectorAll("#current_info > input")].map((inp) => (inp.value ? inp.value : `[^${[...new Set(currentKeys.join(""))]}]`)).join("")}$`);
 	document.getElementById("matched_words").innerHTML = "";
 	// Filter the list of words
-	matchedWords = GlobalWordList.filter((word) => value.test(word.toLowerCase())).filter(
-		(word) => ![...document.querySelectorAll(".keyboard > span[blacklisted]")].map((elem) => elem.textContent).some((l) => word.includes(l))
-	);
+	matchedWords = GlobalWordList.filter((word) => value.test(word.toLowerCase()))
+		.filter((word) => ![...document.querySelectorAll(".keyboard > span[blacklisted]")].map((elem) => elem.textContent).some((l) => word.includes(l)))
+		.filter(AlphaCheck)
+		.filter(NoSpacesCheck)
+		.filter(NoNumbersCheck)
+		.filter(NoFreakyCheck);
 	// Add sample words
 	matchedWords
 		.slice(0, 100)
