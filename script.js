@@ -1,3 +1,12 @@
+let Config = {
+	onlyAlpha: false,
+	NoSpaces: false,
+	NoNumbers: false,
+	NoFreaky: false,
+};
+let GlobalWordList = [];
+let wordlist = {};
+
 let addEventListenerToInput = () => {
 	document.querySelectorAll("#current_info > input").forEach((elem) => {
 		elem.addEventListener("keydown", (e) => {
@@ -34,8 +43,6 @@ function match(event, code, keycode) {
 	return event.code == code || event.key == code || event.keyCode == keycode || event.which == keycode;
 }
 
-let wordlist = [];
-
 const FindGuess = () => {
 	let currentKeys = [...document.querySelectorAll("#current_info > input")].map((elem) => elem.value).filter((a) => a);
 	Object.values(keyboard).forEach((elem) => {
@@ -45,9 +52,9 @@ const FindGuess = () => {
 	let value = RegExp(`^${[...document.querySelectorAll("#current_info > input")].map((inp) => (inp.value ? inp.value : `[^${[...new Set(currentKeys.join(""))]}]`)).join("")}$`);
 	document.getElementById("matched_words").innerHTML = "";
 	// Filter the list of words
-	matchedWords = wordlist
-		.filter((word) => value.test(word.toLowerCase()))
-		.filter((word) => ![...document.querySelectorAll(".keyboard > span[blacklisted]")].map((elem) => elem.textContent).some((l) => word.includes(l)));
+	matchedWords = GlobalWordList.filter((word) => value.test(word.toLowerCase())).filter(
+		(word) => ![...document.querySelectorAll(".keyboard > span[blacklisted]")].map((elem) => elem.textContent).some((l) => word.includes(l))
+	);
 	// Add sample words
 	matchedWords
 		.slice(0, 100)
@@ -84,7 +91,7 @@ const FindGuess = () => {
 };
 
 document.getElementById("purge_dup").addEventListener("click", () => {
-	wordlist = [...new Set(wordlist)];
+	GlobalWordList = [...new Set(GlobalWordList)];
 	FindGuess();
 });
 
@@ -103,19 +110,18 @@ Object.values(keyboard).forEach((elem) => {
 });
 
 // JS for Config
-let wordlistNew = {};
 
 Promise.all([fetch("words/basic_500.txt"), fetch("words/dictionary.txt"), fetch("words/macmillan.txt"), fetch("words/merriam.txt"), fetch("words/oxford.txt"), fetch("words/yourdictionary.txt")])
 	.then((res) => Promise.all(res.map((res) => res.text())))
 	.then(([basic_500, dictionary, macmillian, merriam, oxford, yourdictionary]) => {
 		console.log(new Date(), "All wordlists have been fetched");
-		wordlistNew.basic_500 = basic_500.replaceAll("\r", "").split("\n");
-		wordlistNew.dictionary = dictionary.replaceAll("\r", "").split("\n");
-		wordlistNew.macmillian = macmillian.replaceAll("\r", "").split("\n");
-		wordlistNew.merriam = merriam.replaceAll("\r", "").split("\n");
-		wordlistNew.oxford = oxford.replaceAll("\r", "").split("\n");
-		wordlistNew.yourdictionary = yourdictionary.replaceAll("\r", "").split("\n");
-		wordlist = wordlistNew.basic_500;
+		wordlist.basic_500 = basic_500.replaceAll("\r", "").split("\n");
+		wordlist.dictionary = dictionary.replaceAll("\r", "").split("\n");
+		wordlist.macmillian = macmillian.replaceAll("\r", "").split("\n");
+		wordlist.merriam = merriam.replaceAll("\r", "").split("\n");
+		wordlist.oxford = oxford.replaceAll("\r", "").split("\n");
+		wordlist.yourdictionary = yourdictionary.replaceAll("\r", "").split("\n");
+		GlobalWordList = wordlist.basic_500;
 		document.querySelectorAll("#dictionary").forEach((elem) => (elem.disabled = false));
 		console.log(new Date(), "All wordlists have been loaded");
 	})
@@ -125,12 +131,12 @@ Promise.all([fetch("words/basic_500.txt"), fetch("words/dictionary.txt"), fetch(
 	});
 
 const updateWordlist = () => {
-	wordlist = wordlistNew.basic_500;
-	if (document.querySelector('input[name="dictionary"]').checked) wordlist = wordlist.concat(wordlistNew.dictionary);
-	if (document.querySelector('input[name="macmillan"]').checked) wordlist = wordlist.concat(wordlistNew.macmillian);
-	if (document.querySelector('input[name="merriam-webster"]').checked) wordlist = wordlist.concat(wordlistNew.merriam);
-	if (document.querySelector('input[name="oxford"]').checked) wordlist = wordlist.concat(wordlistNew.oxford);
-	if (document.querySelector('input[name="yourdictionary"]').checked) wordlist = wordlist.concat(wordlistNew.yourdictionary);
+	GlobalWordList = wordlist.basic_500;
+	if (document.querySelector('input[name="dictionary"]').checked) GlobalWordList = GlobalWordList.concat(wordlist.dictionary);
+	if (document.querySelector('input[name="macmillan"]').checked) GlobalWordList = GlobalWordList.concat(wordlist.macmillian);
+	if (document.querySelector('input[name="merriam-webster"]').checked) GlobalWordList = GlobalWordList.concat(wordlist.merriam);
+	if (document.querySelector('input[name="oxford"]').checked) GlobalWordList = GlobalWordList.concat(wordlist.oxford);
+	if (document.querySelector('input[name="yourdictionary"]').checked) GlobalWordList = GlobalWordList.concat(wordlist.yourdictionary);
 	document.querySelectorAll("#dictionary").forEach((elem) => elem.removeAttribute("disabled"));
 	FindGuess();
 };
@@ -167,4 +173,17 @@ document.querySelector('[data-action="decrement"]').addEventListener("click", ()
 		letters--;
 		addInputs();
 	}
+});
+
+document.querySelector("#onlyAlpha[word-rules]").addEventListener("change", () => {
+	if (document.querySelector("#onlyAlpha[word-rules]").checked) {
+		document.querySelector("#NoSpaces[word-rules]").setAttribute("disabled", "");
+		document.querySelector("#NoNumbers[word-rules]").setAttribute("disabled", "");
+		document.querySelector("#NoFreaky[word-rules]").setAttribute("disabled", "");
+	} else {
+		document.querySelector("#NoSpaces[word-rules]").removeAttribute("disabled");
+		document.querySelector("#NoNumbers[word-rules]").removeAttribute("disabled");
+		document.querySelector("#NoFreaky[word-rules]").removeAttribute("disabled");
+	}
+	FindGuess();
 });
