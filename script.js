@@ -35,10 +35,6 @@ function match(event, code, keycode) {
 }
 
 let wordlist = [];
-fetch("words/basic_500.txt")
-	.then((res) => res.text())
-	.then((text) => text.replaceAll("\r", "").split("\n"))
-	.then((words) => (wordlist = wordlist.concat(words)));
 
 const FindGuess = () => {
 	let currentKeys = [...document.querySelectorAll("#current_info > input")].map((elem) => elem.value).filter((a) => a);
@@ -119,6 +115,8 @@ Promise.all([fetch("words/basic_500.txt"), fetch("words/dictionary.txt"), fetch(
 		wordlistNew.merriam = merriam.replaceAll("\r", "").split("\n");
 		wordlistNew.oxford = oxford.replaceAll("\r", "").split("\n");
 		wordlistNew.yourdictionary = yourdictionary.replaceAll("\r", "").split("\n");
+		wordlist = wordlistNew.basic_500;
+		document.querySelectorAll("#dictionary").forEach((elem) => (elem.disabled = false));
 		console.log(new Date(), "All wordlists have been loaded");
 	})
 	.then(FindGuess)
