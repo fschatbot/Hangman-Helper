@@ -1,4 +1,13 @@
+<div align="center">
+
 # Hangman Helper
+
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&style=for-the-badge&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&style=for-the-badge&logoColor=white)
+![HTML](https://img.shields.io/badge/HTML-E34F26?logo=html5&style=for-the-badge&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-1572B6?logo=css3&style=for-the-badge&logoColor=white)
+
+</div>
 
 Ever felt like playing hangman is hard? Do you want to cheat in the game? Well look no futher cause you stumbled on the right repo!
 
